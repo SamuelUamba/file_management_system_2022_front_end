@@ -128,7 +128,6 @@ export default function useTable(records, headCells, filterFn) {
       getComparator(order, orderBy)
     ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
-
   return {
     TblContainer,
     TblHead,

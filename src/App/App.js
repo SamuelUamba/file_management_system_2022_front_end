@@ -9,26 +9,32 @@ import {
 
 import { Routes, Route, HashRouter } from "react-router-dom";
 
-import Header from "../Header";
-import Menu from "../Menu";
-import AdminDashboard from "../AdminDashboard";
-import Footer from "../Footer";
-
-const useStyles = makeStyles({
-  appMain: {
-    // paddingLeft: "250px",
-    width: "100%",
-  },
-});
+import Header from "../Navegations/Header";
+import Menu from "../Navegations/Menu";
+import AdminDashboard from "../dashboards/AdminDashboard";
+import Registo from "../pages/notas/Registo";
+import Footer from "../Navegations/Footer";
+import Tabela_Dados from "../pages/notas/Tabela_Dados";
 
 function App() {
   return (
-    <div class="wrapper">
-      <Header />
-      <Menu />
-      <AdminDashboard />
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div class="wrapper">
+        <>
+          <HashRouter>
+            <Header />
+            <Menu />
+            <Footer />
+            <Routes>
+              <Route exact path="/" element={<AdminDashboard />} />
+              <Route exact path="/Notas/entrada" element={<Registo />} />
+              <Route exact path="/Notas/dados" element={<Tabela_Dados />} />
+            </Routes>
+          </HashRouter>
+        </>
+      </div>
+      <CssBaseline />
+    </ThemeProvider>
   );
 }
 

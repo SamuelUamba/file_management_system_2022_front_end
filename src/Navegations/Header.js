@@ -19,13 +19,13 @@ export default class Header extends Component {
               </a>
             </li>
             <li className="nav-item d-none d-sm-inline-block">
-              <a href="index3.html" className="nav-link">
+              <a href="/#/home" className="nav-link">
                 Home
               </a>
             </li>
             <li className="nav-item d-none d-sm-inline-block">
               <a href="#" className="nav-link">
-                Contact
+                Ajuda
               </a>
             </li>
           </ul>
@@ -162,25 +162,23 @@ export default class Header extends Component {
                 </span>
                 <div className="dropdown-divider" />
                 <a href="#" className="dropdown-item">
-                  <i className="fas fa-envelope mr-2" /> 4 new messages
+                  <i className="fas fa-envelope mr-2" /> 4 Notas Pendentes
                   <span className="float-right text-muted text-sm">3 mins</span>
                 </a>
                 <div className="dropdown-divider" />
                 <a href="#" className="dropdown-item">
-                  <i className="fas fa-users mr-2" /> 8 friend requests
+                  <i className="fas fa-users mr-2" /> 8 Audiencias Pendentes
                   <span className="float-right text-muted text-sm">
                     12 hours
                   </span>
                 </a>
                 <div className="dropdown-divider" />
                 <a href="#" className="dropdown-item">
-                  <i className="fas fa-file mr-2" /> 3 new reports
+                  <i className="fas fa-file mr-2" /> 3 Requerimentos sem
+                  desfecho
                   <span className="float-right text-muted text-sm">2 days</span>
                 </a>
                 <div className="dropdown-divider" />
-                <a href="#" className="dropdown-item dropdown-footer">
-                  See All Notifications
-                </a>
               </div>
             </li>
             <li className="nav-item">
@@ -191,17 +189,6 @@ export default class Header extends Component {
                 role="button"
               >
                 <i className="fas fa-expand-arrows-alt" />
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                data-widget="control-sidebar"
-                data-slide="true"
-                href="#"
-                role="button"
-              >
-                <i className="fas fa-th-large" />
               </a>
             </li>
           </ul>
