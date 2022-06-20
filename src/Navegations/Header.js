@@ -19,7 +19,7 @@ export default class Header extends Component {
               </a>
             </li>
             <li className="nav-item d-none d-sm-inline-block">
-              <a href="/#/home" className="nav-link">
+              <a href="/" className="nav-link">
                 Home
               </a>
             </li>

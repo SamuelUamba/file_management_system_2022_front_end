@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Grid, TextField, FormLabel, makeStyles } from "@material-ui/core";
-import Controls from "../../components/controls/Controls";
-import { useForm, Form } from "../../components/useForm";
-import Notification from "../../components/Notification";
-import * as NotaService from "./NotaService";
+import Controls from "../../../components/controls/Controls";
+import { useForm, Form } from "../../../components/useForm";
+import Notification from "../../../components/Notification";
+import * as NotaService from "../RequerimentosService";
 
 const initialFValues = {
   id: 0,
   data_entrada: new Date(),
   assunto: "",
-  codigo_nota: "",
   tipo: "normal",
   observacao: "",
   destino_id: "",
-  localidade_id: "",
-  proveniencia_id: "",
+
+  requerente_id: "",
+  nome_requerente: "",
+  email_requerente: "",
+  contacto_requerente: "",
+
   //   isSubmited: true,
 };
 const prioridadeItens = [
@@ -27,22 +30,22 @@ export default function RegistoForm(props) {
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
-    if ("codigo_nota" in fieldFValues)
-      temp.codigo_nota = fieldFValues.codigo_nota ? "" : "Campo obrigatório.";
     if ("assunto" in fieldFValues)
       temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
+    if ("nome_requerente" in fieldFValues)
+      temp.nome_requerente = fieldFValues.nome_requerente
+        ? ""
+        : "Campo obrigatório.";
+
     if ("observacao" in fieldFValues)
       temp.observacao = fieldFValues.observacao ? "" : "Campo obrigatório.";
-    if ("proveniencia_id" in fieldFValues)
-      temp.proveniencia_id =
-        fieldFValues.proveniencia_id.length != 0 ? "" : "Campo obrigatório.";
     if ("destino_id" in fieldFValues)
       temp.destino_id =
         fieldFValues.destino_id.length != 0 ? "" : "Campo obrigatório.";
 
-    if ("localidade_id" in fieldFValues)
-      temp.localidade_id =
-        fieldFValues.localidade_id.length != 0 ? "" : "Campo obrigatório.";
+    if ("requerente_id" in fieldFValues)
+      temp.requerente_id =
+        fieldFValues.requerente_id.length != 0 ? "" : "Campo obrigatório.";
     if ("data_entrada" in fieldFValues)
       temp.data_entrada =
         fieldFValues.data_entrada.length != 0 ? "" : "Campo obrigatório.";
@@ -93,14 +96,6 @@ export default function RegistoForm(props) {
           <Grid xs={6}>
             <Controls.Input
               variant="outlined"
-              label="Referência da Nota"
-              name="codigo_nota"
-              value={values.codigo_nota}
-              onChange={handleInputChange}
-              error={errors.codigo_nota}
-            />{" "}
-            <Controls.Input
-              variant="outlined"
               label="Assunto"
               name="assunto"
               value={values.assunto}
@@ -110,22 +105,6 @@ export default function RegistoForm(props) {
               error={errors.assunto}
             />{" "}
             <Controls.Select
-              name="proveniencia_id"
-              label="Proveniência"
-              value={values.proveniencia_id}
-              onChange={handleInputChange}
-              options={NotaService.getProveniencias()}
-              error={errors.proveniencia_id}
-            />{" "}
-            <Controls.Select
-              name="localidade_id"
-              label="Localidade"
-              value={values.localidade_id}
-              onChange={handleInputChange}
-              options={NotaService.getLocalidade()}
-              error={errors.localidade_id}
-            />
-            <Controls.Select
               name="destino_id"
               label="Destino"
               value={values.destino_id}
@@ -133,10 +112,8 @@ export default function RegistoForm(props) {
               options={NotaService.getDestinos()}
               error={errors.destino_id}
             />
-          </Grid>
-          <Grid xs={6}>
             <Controls.RadioGroup
-              label="Prioridade"
+              // label="Prioridade"
               name="tipo"
               value={values.tipo}
               onChange={handleInputChange}
@@ -150,7 +127,7 @@ export default function RegistoForm(props) {
               value={values.observacao}
               onChange={handleInputChange}
               multiline
-              rows={5}
+              rows={2}
               error={errors.observacao}
             />
             <FormLabel>Data de Entrada</FormLabel>
@@ -162,6 +139,40 @@ export default function RegistoForm(props) {
               value={values.data_entrada}
               onChange={handleInputChange}
               error={errors.data_entrada}
+            />{" "}
+          </Grid>
+          <Grid xs={6}>
+            <Controls.Select
+              name="requerente_id"
+              label="Requerente"
+              value={values.requerente_id}
+              onChange={handleInputChange}
+              options={NotaService.getLocalidade()}
+              error={errors.requerente_id}
+            />
+            <Controls.Input
+              variant="outlined"
+              name="nome_requerente"
+              label="Nome do Requerente"
+              value={values.nome_requerente}
+              onChange={handleInputChange}
+              error={errors.nome_requerente}
+            />{" "}
+            <Controls.Input
+              variant="outlined"
+              name="email_requerente"
+              label="E-mail do Requrente"
+              value={values.email_requerente}
+              onChange={handleInputChange}
+              error={errors.email_requerente}
+            />{" "}
+            <Controls.Input
+              variant="outlined"
+              label="Contacto Telefonico"
+              name="contacto_requerente"
+              value={values.contacto_requerente}
+              onChange={handleInputChange}
+              error={errors.contacto_requerente}
             />{" "}
           </Grid>
           <div>

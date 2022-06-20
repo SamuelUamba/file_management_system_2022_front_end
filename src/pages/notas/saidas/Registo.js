@@ -1,7 +1,6 @@
 import { Paper, makeStyles } from "@material-ui/core";
 import React from "react";
 import RegistoForm from "./RegistoForm";
-import PageHeader from "../../components/PageHeader";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +23,7 @@ export default function Registo() {
               <div className="col-sm-6">
                 <h1 className="m-0">
                   <DocumentScannerIcon fontSize="large" />
-                  Entrada de Notas de Envio
+                  Saida de Notas de Envio
                 </h1>
               </div>
               {/* /.col */}
@@ -33,7 +32,7 @@ export default function Registo() {
                   <li className="breadcrumb-item">
                     <a href="/#/">Home</a>
                   </li>
-                  <li className="breadcrumb-item active">Entrada/Notas</li>
+                  <li className="breadcrumb-item active">Saida / Notas</li>
                 </ol>
               </div>
             </div>

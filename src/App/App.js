@@ -11,10 +11,20 @@ import { Routes, Route, HashRouter } from "react-router-dom";
 
 import Header from "../Navegations/Header";
 import Menu from "../Navegations/Menu";
-import AdminDashboard from "../dashboards/AdminDashboard";
-import Registo from "../pages/notas/Registo";
 import Footer from "../Navegations/Footer";
-import Tabela_Dados from "../pages/notas/Tabela_Dados";
+
+import AdminDashboard from "../dashboards/AdminDashboard";
+
+import RegistoNota from "../pages/notas/entradas/Registo";
+import RegistoSaida from "../pages/notas/saidas/Registo";
+import Tabela_Dados_Entrada from "../pages/notas/entradas/Tabela_Dados_Entrada";
+import Tabela_dados_Saidas from "../pages/notas/saidas/Tabela_Dados_Saidas";
+
+import RegistoRequerimento from "../pages/requerimentos/entradas/Registo";
+import Tabela_Dados_Entrada_Requerimentos from "../pages/requerimentos/entradas/Tabela_Dados_Entrada_Requerimentos";
+
+import RegistoAudiencia from "../pages/audiencias/Registo";
+import Tabela_Dados_audiencias from "../pages/audiencias/Tabela_Dados_audiencias";
 
 function App() {
   return (
@@ -27,8 +37,40 @@ function App() {
             <Footer />
             <Routes>
               <Route exact path="/" element={<AdminDashboard />} />
-              <Route exact path="/Notas/entrada" element={<Registo />} />
-              <Route exact path="/Notas/dados" element={<Tabela_Dados />} />
+              {/* Notas de Envio */}
+              <Route exact path="/Notas/entrada" element={<RegistoNota />} />
+              <Route
+                exact
+                path="/Notas/dados/entradas"
+                element={<Tabela_Dados_Entrada />}
+              />
+              <Route exact path="/Notas/saidas" element={<RegistoSaida />} />
+              <Route
+                exact
+                path="/Notas/dados/saidas"
+                element={<Tabela_dados_Saidas />}
+              />
+
+              {/* Requerimentos */}
+
+              <Route
+                exact
+                path="/Requerimentos/entrada"
+                element={<RegistoRequerimento />}
+              />
+              <Route
+                exact
+                path="/Requerimentos/dados/entradas"
+                element={<Tabela_Dados_Entrada_Requerimentos />}
+              />
+
+              {/* Audiencias */}
+              <Route exact path="/Audiencias" element={<RegistoAudiencia />} />
+              <Route
+                exact
+                path="/Audiencias/agendar"
+                element={<Tabela_Dados_audiencias />}
+              />
             </Routes>
           </HashRouter>
         </>

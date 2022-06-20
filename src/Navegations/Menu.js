@@ -89,17 +89,24 @@ export default class Menu extends Component {
                       </a>
                     </li>
                     <li className="nav-item">
-                      <a href="/#/Notas/saida" className="nav-link">
+                      <a href="/#/Notas/saidas" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <span className="badge badge-danger right">-</span>
                         <p>Saida</p>
                       </a>
                     </li>
                     <li className="nav-item">
-                      <a href="/#/Notas/dados" className="nav-link">
+                      <a href="/#/Notas/dados/entradas" className="nav-link">
                         <BackupTableIcon />
                         <span className="badge badge-success right">.</span>
-                        <p>Tabela de dados</p>
+                        <p>Lista de Entradas</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/#/Notas/dados/saidas" className="nav-link">
+                        <BackupTableIcon />
+                        <span className="badge badge-success right">.</span>
+                        <p>Lista de Saidas</p>
                       </a>
                     </li>
                   </ul>
@@ -116,32 +123,46 @@ export default class Menu extends Component {
                     <li className="nav-item">
                       <a href="/#/Requerimentos/entrada" className="nav-link">
                         <i className="far fa-circle nav-icon" />
+                        <span className="badge badge-info right">+</span>
                         <p>Entradas</p>
                       </a>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                       <a href="/#/Requerimentos/saida" className="nav-link">
                         <i className="far fa-circle nav-icon" />
+                        <span className="badge badge-danger right">-</span>
+
                         <p>Saidas</p>
+                      </a>
+                    </li> */}
+                    <li className="nav-item">
+                      <a
+                        href="/#/Requerimentos/dados/entradas"
+                        className="nav-link"
+                      >
+                        <BackupTableIcon />
+                        <span className="badge badge-success right">.</span>
+                        <p>Tabela de Dados</p>
                       </a>
                     </li>
                   </ul>
                 </li>
-                <li className="nav-item">
-                  <a href="/#/Tabelas" className="nav-link">
-                    <BackupTableIcon fontSize="large" />
-                    <p>
-                      Tabelas de dados
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                </li>
+
                 <li className="nav-header">Audiencias</li>
                 <li className="nav-item">
                   <a href="/#/Audiencias" className="nav-link">
-                    <CalendarMonthIcon fontSize="large" />
+                    <CalendarMonthIcon fontSize="large" color="warning" />
                     <p>
-                      Marcar
+                      Pedidos
+                      <span className="badge badge-info right">2</span>
+                    </p>
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a href="/#/Audiencias/agendar" className="nav-link">
+                    <CalendarMonthIcon fontSize="large" color="success" />
+                    <p>
+                      Agendar
                       <span className="badge badge-info right">2</span>
                     </p>
                   </a>
