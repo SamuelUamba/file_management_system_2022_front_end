@@ -26,6 +26,8 @@ import Tabela_Dados_Entrada_Requerimentos from "../pages/requerimentos/entradas/
 import RegistoAudiencia from "../pages/audiencias/Registo";
 import Tabela_Dados_audiencias from "../pages/audiencias/Tabela_Dados_audiencias";
 
+import Configuracoes from "../pages/config/Configuracoes";
+
 function App() {
   return (
     <ThemeProvider>
@@ -71,6 +73,9 @@ function App() {
                 path="/Audiencias/agendar"
                 element={<Tabela_Dados_audiencias />}
               />
+{/* Configuracoes */}
+              <Route exact path="/configuracoes" element={<Configuracoes />} />
+
             </Routes>
           </HashRouter>
         </>

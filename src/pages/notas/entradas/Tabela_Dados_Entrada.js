@@ -7,7 +7,7 @@ import {
   Toolbar,
   InputAdornment,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegistoForm from "./RegistoForm";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import useTable from "../../../components/useTable";
@@ -42,7 +42,7 @@ export default function Tabela_dados() {
   const classes = useStyles();
   const [actualizar, setActualizar] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
-  const [records, setRecords] = useState(NotaService.list());
+  const [records, setRecords] = useState([]);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -74,33 +74,60 @@ export default function Tabela_dados() {
     title: "",
     subTitle: "",
   });
+
   const Edit = (registo) => {
-    NotaService.update(registo);
-    setRecords(NotaService.list());
-    setNotify({
-      isOpen: true,
-      message: "Dado Actualizado com sucesso!",
-      type: "success",
+    fetch(
+      "http://localhost:8000/api/updateNotaEntrada/" +
+        registo.id +
+        "?_method=PUT",
+      {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(registo),
+      }
+    ).then(() => {
+      console.log("updated!");
+      setNotify({
+        isOpen: true,
+        message: "Dado actualizado com sucesso!",
+        type: "success",
+      });
+      getList();
     });
     setOpenPopup(false);
-    setRecordForEdit(null);
-  };
-  const onDelete = (id) => {
-    NotaService.destroy(id);
-    setRecords(NotaService.list());
-    setNotify({
-      isOpen: true,
-      message: "Dado Eliminado com sucesso!",
-      type: "error",
-    });
-    setConfirmDialog({
-      isOpen: false,
-    });
   };
   const openInPopup = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
   };
+  async function onDelete(id) {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    let result = await fetch(
+      "http://localhost:8000/api/deleteNotaEntrada/" + id,
+      {
+        method: "DELETE",
+      }
+    );
+    result = await result.json();
+    console.warn(result);
+    setNotify({
+      isOpen: true,
+      message: "Eliminado com sucesso!",
+      type: "error",
+    });
+    getList();
+  }
+  useEffect(() => {
+    getList();
+  }, []);
+  async function getList() {
+    let result = await fetch("http://localhost:8000/api/getNotaEntrada");
+    result = await result.json();
+    setRecords(result);
+  }
   return (
     <div>
       {/* Content Wrapper. Contains page content */}
@@ -121,7 +148,7 @@ export default function Tabela_dados() {
                   <li className="breadcrumb-item">
                     <a href="/#/">Home</a>
                   </li>
-                  <li className="breadcrumb-item active">Entrada/Notas</li>
+                  <li className="breadcrumb-item active">Lista / Notas</li>
                 </ol>
               </div>
             </div>

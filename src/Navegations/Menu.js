@@ -4,6 +4,7 @@ import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import ArticleIcon from "@mui/icons-material/Article";
 import BackupTableIcon from "@mui/icons-material/BackupTable";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default class Menu extends Component {
   render() {
@@ -165,6 +166,13 @@ export default class Menu extends Component {
                       Agendar
                       <span className="badge badge-info right">2</span>
                     </p>
+                  </a>
+                </li>
+
+                <li className="nav-item">
+                  <a href="/#/configuracoes" className="nav-link">
+                    <SettingsIcon fontSize="large" color="success" />
+                    <p>Configurações</p>
                   </a>
                 </li>
               </ul>

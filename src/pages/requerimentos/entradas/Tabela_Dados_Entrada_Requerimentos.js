@@ -7,7 +7,7 @@ import {
   Toolbar,
   InputAdornment,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegistoForm from "./RegistoForm";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import useTable from "../../../components/useTable";
@@ -41,7 +41,7 @@ export default function Tabela_dados() {
   const classes = useStyles();
   const [actualizar, setActualizar] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
-  const [records, setRecords] = useState(RequerimentosService.list());
+  const [records, setRecords] = useState([]);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -100,6 +100,14 @@ export default function Tabela_dados() {
     setRecordForEdit(item);
     setOpenPopup(true);
   };
+  useEffect(() => {
+    getList();
+  }, []);
+  async function getList() {
+    let result = await fetch("http://localhost:8000/api/getRequerimento");
+    result = await result.json();
+    setRecords(result);
+  }
   return (
     <div>
       {/* Content Wrapper. Contains page content */}

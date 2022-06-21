@@ -9,7 +9,7 @@ const initialFValues = {
   id: 0,
   data_saida: new Date(),
   assunto: "",
-  codigo_nota: "",
+  nota_saida_id: "",
   observacao: "",
   destino_id: "",
   localidade_id: "",
@@ -21,12 +21,19 @@ const prioridadeItens = [
 ];
 export default function RegistoForm(props) {
   const { Edit, recordForEdit, actualizar } = props;
-
+  const [localidades, setLocalidades] = useState([]);
+  const [destinos, setDestinos] = useState([]);
+  useEffect(() => {
+    getLocalidade();
+    getDestinos();
+  }, []);
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
-    if ("codigo_nota" in fieldFValues)
-      temp.codigo_nota = fieldFValues.codigo_nota ? "" : "Campo obrigatório.";
+    if ("nota_saida_id" in fieldFValues)
+      temp.nota_saida_id = fieldFValues.nota_saida_id
+        ? ""
+        : "Campo obrigatório.";
     if ("assunto" in fieldFValues)
       temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
     if ("observacao" in fieldFValues)
@@ -57,11 +64,17 @@ export default function RegistoForm(props) {
       if (actualizar) {
         Edit(values);
       } else {
-        NotaService.create(values);
-        setNotify({
-          isOpen: true,
-          message: "Dado Submetido com sucesso!",
-          type: "success",
+        fetch("http://localhost:8000/api/saveNotaSaida", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+          setNotify({
+            isOpen: true,
+            message: "Dado Submetido com sucesso!",
+            type: "success",
+          });
         });
       }
       resetForm();
@@ -82,6 +95,17 @@ export default function RegistoForm(props) {
         ...recordForEdit,
       });
   }, [recordForEdit]);
+
+  async function getLocalidade() {
+    let result = await fetch("http://localhost:8000/api/getLocalidade");
+    result = await result.json();
+    setLocalidades(result);
+  }
+  async function getDestinos() {
+    let result = await fetch("http://localhost:8000/api/getDestino");
+    result = await result.json();
+    setDestinos(result);
+  }
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -90,10 +114,10 @@ export default function RegistoForm(props) {
             <Controls.Input
               variant="outlined"
               label="Referência da Nota"
-              name="codigo_nota"
-              value={values.codigo_nota}
+              name="nota_saida_id"
+              value={values.nota_saida_id}
               onChange={handleInputChange}
-              error={errors.codigo_nota}
+              error={errors.nota_saida_id}
             />{" "}
             <Controls.Input
               variant="outlined"
@@ -106,20 +130,20 @@ export default function RegistoForm(props) {
               error={errors.assunto}
             />{" "}
             <Controls.Select
-              name="localidade_id"
-              label="Localidade"
-              value={values.localidade_id}
-              onChange={handleInputChange}
-              options={NotaService.getLocalidade()}
-              error={errors.localidade_id}
-            />
-            <Controls.Select
               name="destino_id"
               label="Destino"
               value={values.destino_id}
               onChange={handleInputChange}
-              options={NotaService.getDestinos()}
+              options={destinos}
               error={errors.destino_id}
+            />
+            <Controls.Select
+              name="localidade_id"
+              label="Localidade"
+              value={values.localidade_id}
+              onChange={handleInputChange}
+              options={localidades}
+              error={errors.localidade_id}
             />
           </Grid>
           <Grid xs={6}>

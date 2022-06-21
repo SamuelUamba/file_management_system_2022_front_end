@@ -33,7 +33,7 @@ export default function Registo() {
                   <li className="breadcrumb-item">
                     <a href="/#/">Home</a>
                   </li>
-                  <li className="breadcrumb-item active">Entrada/Notas</li>
+                  <li className="breadcrumb-item active">Entrada / Notas</li>
                 </ol>
               </div>
             </div>

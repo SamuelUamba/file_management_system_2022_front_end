@@ -7,11 +7,10 @@ import {
   Toolbar,
   InputAdornment,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegistoForm from "./RegistoForm";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import useTable from "../../../components/useTable";
-import * as NotaService from "../NotaService";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Controls from "../../../components/controls/Controls";
@@ -40,7 +39,7 @@ export default function Tabela_dados() {
   const classes = useStyles();
   const [actualizar, setActualizar] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
-  const [records, setRecords] = useState(NotaService.list());
+  const [records, setRecords] = useState([]);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -55,7 +54,7 @@ export default function Tabela_dados() {
         if (target.value == "") return items;
         else
           return items.filter((x) =>
-            x.codigo_nota.toLowerCase().includes(target.value)
+            x.nota_saida_id.toLowerCase().includes(target.value)
           );
       },
     });
@@ -73,28 +72,54 @@ export default function Tabela_dados() {
     subTitle: "",
   });
   const Edit = (registo) => {
-    NotaService.update(registo);
-    setRecords(NotaService.list());
-    setNotify({
-      isOpen: true,
-      message: "Dado Actualizado com sucesso!",
-      type: "success",
+    fetch(
+      "http://localhost:8000/api/updateNotaSaida/" +
+        registo.nota_saida_id +
+        "?_method=PUT",
+      {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(registo),
+      }
+    ).then(() => {
+      console.log("updated!");
+      setNotify({
+        isOpen: true,
+        message: "Dado actualizado com sucesso!",
+        type: "success",
+      });
+      getList();
     });
     setOpenPopup(false);
-    setRecordForEdit(null);
   };
-  const onDelete = (id) => {
-    NotaService.destroy(id);
-    setRecords(NotaService.list());
-    setNotify({
-      isOpen: true,
-      message: "Dado Eliminado com sucesso!",
-      type: "error",
-    });
+  async function onDelete(nota_saida_id) {
     setConfirmDialog({
+      ...confirmDialog,
       isOpen: false,
     });
-  };
+    let result = await fetch(
+      "http://localhost:8000/api/deleteNotaSaida/" + nota_saida_id,
+      {
+        method: "DELETE",
+      }
+    );
+    result = await result.json();
+    console.warn(result);
+    setNotify({
+      isOpen: true,
+      message: "Eliminado com sucesso!",
+      type: "error",
+    });
+    getList();
+  }
+  useEffect(() => {
+    getList();
+  }, []);
+  async function getList() {
+    let result = await fetch("http://localhost:8000/api/getNotaSaida");
+    result = await result.json();
+    setRecords(result);
+  }
   const openInPopup = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
@@ -146,8 +171,8 @@ export default function Tabela_dados() {
                 <TblHead />
                 <TableBody>
                   {recordsAfterPagingAndSorting().map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.codigo_nota}</TableCell>
+                    <TableRow key={item.nota_saida_id}>
+                      <TableCell>{item.nota_saida_id}</TableCell>
                       <TableCell>{item.data_saida}</TableCell>
                       <TableCell>{item.assunto}</TableCell>
                       <TableCell>{item.destino_id}</TableCell>
@@ -170,7 +195,7 @@ export default function Tabela_dados() {
                               title: "Tens Certeza da Operação?",
                               subTitle: "Esta acção não é reversível",
                               onConfirm: () => {
-                                onDelete(item.id);
+                                onDelete(item.nota_saida_id);
                                 setOpenPopup(false);
                               },
                             });

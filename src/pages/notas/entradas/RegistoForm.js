@@ -23,7 +23,15 @@ const prioridadeItens = [
 ];
 export default function RegistoForm(props) {
   const { Edit, recordForEdit, actualizar } = props;
+  const [proveniencias, setProveniencias] = useState([]);
+  const [localidades, setLocalidades] = useState([]);
+  const [destinos, setDestinos] = useState([]);
 
+  useEffect(() => {
+    getProveniencias();
+    getLocalidade();
+    getDestinos();
+  }, []);
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
@@ -54,18 +62,23 @@ export default function RegistoForm(props) {
     if (fieldFValues == values)
       return Object.values(temp).every((x) => x == "");
   };
-  //Ao submeter o formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
       if (actualizar) {
         Edit(values);
       } else {
-        NotaService.create(values);
-        setNotify({
-          isOpen: true,
-          message: "Dado Submetido com sucesso!",
-          type: "success",
+        fetch("http://localhost:8000/api/saveNotaEntrada", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+          setNotify({
+            isOpen: true,
+            message: "Dado Submetido com sucesso!",
+            type: "success",
+          });
         });
       }
       resetForm();
@@ -86,6 +99,21 @@ export default function RegistoForm(props) {
         ...recordForEdit,
       });
   }, [recordForEdit]);
+  async function getProveniencias() {
+    let result = await fetch("http://localhost:8000/api/getProveniencia");
+    result = await result.json();
+    setProveniencias(result);
+  }
+  async function getLocalidade() {
+    let result = await fetch("http://localhost:8000/api/getLocalidade");
+    result = await result.json();
+    setLocalidades(result);
+  }
+  async function getDestinos() {
+    let result = await fetch("http://localhost:8000/api/getDestino");
+    result = await result.json();
+    setDestinos(result);
+  }
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -114,7 +142,7 @@ export default function RegistoForm(props) {
               label="Proveniência"
               value={values.proveniencia_id}
               onChange={handleInputChange}
-              options={NotaService.getProveniencias()}
+              options={proveniencias}
               error={errors.proveniencia_id}
             />{" "}
             <Controls.Select
@@ -122,7 +150,7 @@ export default function RegistoForm(props) {
               label="Localidade"
               value={values.localidade_id}
               onChange={handleInputChange}
-              options={NotaService.getLocalidade()}
+              options={localidades}
               error={errors.localidade_id}
             />
             <Controls.Select
@@ -130,7 +158,7 @@ export default function RegistoForm(props) {
               label="Destino"
               value={values.destino_id}
               onChange={handleInputChange}
-              options={NotaService.getDestinos()}
+              options={destinos}
               error={errors.destino_id}
             />
           </Grid>

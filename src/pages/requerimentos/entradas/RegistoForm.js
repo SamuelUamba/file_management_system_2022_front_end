@@ -26,7 +26,10 @@ const prioridadeItens = [
 ];
 export default function RegistoForm(props) {
   const { Edit, recordForEdit, actualizar } = props;
-
+  const [destinos, setDestinos] = useState([]);
+  useEffect(() => {
+    getDestinos();
+  }, []);
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
@@ -64,11 +67,24 @@ export default function RegistoForm(props) {
       if (actualizar) {
         Edit(values);
       } else {
-        NotaService.create(values);
-        setNotify({
-          isOpen: true,
-          message: "Dado Submetido com sucesso!",
-          type: "success",
+        fetch("http://localhost:8000/api/saveRequerimento", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+        });
+        fetch("http://localhost:8000/api/saveRequerente", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+          setNotify({
+            isOpen: true,
+            message: "Dado Submetido com sucesso!",
+            type: "success",
+          });
         });
       }
       resetForm();
@@ -89,6 +105,12 @@ export default function RegistoForm(props) {
         ...recordForEdit,
       });
   }, [recordForEdit]);
+  async function getDestinos() {
+    let result = await fetch("http://localhost:8000/api/getDestino");
+    result = await result.json();
+    setDestinos(result);
+  }
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -109,7 +131,7 @@ export default function RegistoForm(props) {
               label="Destino"
               value={values.destino_id}
               onChange={handleInputChange}
-              options={NotaService.getDestinos()}
+              options={destinos}
               error={errors.destino_id}
             />
             <Controls.RadioGroup
@@ -147,7 +169,7 @@ export default function RegistoForm(props) {
               label="Requerente"
               value={values.requerente_id}
               onChange={handleInputChange}
-              options={NotaService.getLocalidade()}
+              options={destinos}
               error={errors.requerente_id}
             />
             <Controls.Input
