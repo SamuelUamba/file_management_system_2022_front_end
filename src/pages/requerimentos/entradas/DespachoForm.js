@@ -9,9 +9,9 @@ const initialFValues = {
   data_entrada: new Date(),
   assunto: "",
   tipo: "normal",
+  despacho: "diferido",
   observacao: "",
   destino_id: "",
-  despacho: "",
   nome: "",
   email: "",
   contacto: "",
@@ -21,11 +21,10 @@ const prioridadeItens = [
   { id: "urgente", title: "Urgente" },
 ];
 const despachoItens = [
-  { id: "D", title: "Normal" },
-  { id: "I", title: "Urgente" },
+  { id: "diferido", title: "Diferido" },
+  { id: "indiferido", title: "Indiferido" },
 ];
-
-export default function RegistoForm(props) {
+export default function DespachoForm(props) {
   const { Edit, recordForEdit, actualizar } = props;
   const [destinos, setDestinos] = useState([]);
   useEffect(() => {
@@ -146,18 +145,15 @@ export default function RegistoForm(props) {
               items={prioridadeItens}
               checked
             />
-            {/* <Controls.RadioGroup
-              // label="Prioridade"
-              name="despacho"
-              // value={values.despacho}
-            
-              value="desabled"
+            <Controls.RadioGroup
+              label="Despacho"
+              name="despcho"
+              value={values.despcho}
               onChange={handleInputChange}
               items={despachoItens}
               checked
-              disabled
-            /> */}
-            {/* <FormLabel>Data de Entrada</FormLabel> */}
+            />
+            <FormLabel>Data de Entrada</FormLabel>
             <Controls.Input
               variant="outlined"
               type="date"

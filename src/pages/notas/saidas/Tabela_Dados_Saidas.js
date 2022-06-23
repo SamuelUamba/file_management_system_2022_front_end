@@ -18,7 +18,8 @@ import { Search } from "@material-ui/icons";
 import Popup from "../../../components/Popup";
 import { ConfirmDialog } from "../../../components/ConfirmDialog";
 import Notification from "../../../components/Notification";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 const useStyles = makeStyles((theme) => ({
   PageContent: {
     margin: theme.spacing(5),
@@ -26,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     width: "50%",
+  },
+  progress: {
+    position: "absolute",
+    right: "750px",
   },
 }));
 const headCells = [
@@ -38,6 +43,7 @@ const headCells = [
 export default function Tabela_dados() {
   const classes = useStyles();
   const [actualizar, setActualizar] = useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [records, setRecords] = useState([]);
   const [filterFn, setFilterFn] = useState({
@@ -119,6 +125,7 @@ export default function Tabela_dados() {
     let result = await fetch("http://localhost:8000/api/getNotaSaida");
     result = await result.json();
     setRecords(result);
+    setLoading(true);
   }
   const openInPopup = (item) => {
     setRecordForEdit(item);
@@ -169,44 +176,52 @@ export default function Tabela_dados() {
               </Toolbar>
               <TblContainer>
                 <TblHead />
-                <TableBody>
-                  {recordsAfterPagingAndSorting().map((item) => (
-                    <TableRow key={item.nota_saida_id}>
-                      <TableCell>{item.nota_saida_id}</TableCell>
-                      <TableCell>{item.data_saida}</TableCell>
-                      <TableCell>{item.assunto}</TableCell>
-                      <TableCell>{item.destino_id}</TableCell>
-                      <TableCell>
-                        <Controls.ActionButton
-                          color="primary"
-                          onClick={() => {
-                            openInPopup(item);
-                            setActualizar(true);
-                            console.log(item);
-                          }}
-                        >
-                          <EditOutlinedIcon fontSize="small" />
-                        </Controls.ActionButton>
-                        <Controls.ActionButton
-                          color="secondary"
-                          onClick={() => {
-                            setConfirmDialog({
-                              isOpen: true,
-                              title: "Tens Certeza da Operação?",
-                              subTitle: "Esta acção não é reversível",
-                              onConfirm: () => {
-                                onDelete(item.nota_saida_id);
-                                setOpenPopup(false);
-                              },
-                            });
-                          }}
-                        >
-                          <CloseIcon fontSize="small" />
-                        </Controls.ActionButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                {loading ? (
+                  <TableBody>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow key={item.nota_saida_id}>
+                        <TableCell>{item.nota_saida_id}</TableCell>
+                        <TableCell>{item.data_saida}</TableCell>
+                        <TableCell>{item.assunto}</TableCell>
+                        <TableCell>{item.destino_id}</TableCell>
+                        <TableCell>
+                          <Controls.ActionButton
+                            color="primary"
+                            onClick={() => {
+                              openInPopup(item);
+                              setActualizar(true);
+                              console.log(item);
+                            }}
+                          >
+                            <EditOutlinedIcon fontSize="small" />
+                          </Controls.ActionButton>
+                          <Controls.ActionButton
+                            color="secondary"
+                            onClick={() => {
+                              setConfirmDialog({
+                                isOpen: true,
+                                title: "Tens Certeza da Operação?",
+                                subTitle: "Esta acção não é reversível",
+                                onConfirm: () => {
+                                  onDelete(item.nota_saida_id);
+                                  setOpenPopup(false);
+                                },
+                              });
+                            }}
+                          >
+                            <CloseIcon fontSize="small" />
+                          </Controls.ActionButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                ) : (
+                  <Box className={classes.progress}>
+                      <CircularProgress />
+                    Carregando  dados...
+                      
+                  </Box>
+                )}
               </TblContainer>
               <TblPagination />
             </Paper>

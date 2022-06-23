@@ -191,6 +191,12 @@ export default function RegistoForm(props) {
               onChange={handleInputChange}
               error={errors.data_entrada}
             />{" "}
+            {/* <Controls.DatePicker
+              name="hireDate"
+              label="Data inicio"
+              // value={values.hireDate}
+              onChange={handleInputChange}
+            /> */}
           </Grid>
           <div>
             <Controls.Button type="submit" variant="outlined" text="Submeter" />

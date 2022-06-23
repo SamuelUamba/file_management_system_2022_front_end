@@ -33,7 +33,7 @@ export default function Registo() {
                     <a href="/#/">Home</a>
                   </li>
                   <li className="breadcrumb-item active">
-                    Entrada/Requerimentos
+                    Entrada / Requerimentos
                   </li>
                 </ol>
               </div>
