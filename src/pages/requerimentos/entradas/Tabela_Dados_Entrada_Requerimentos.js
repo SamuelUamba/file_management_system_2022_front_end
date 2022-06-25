@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import RegistoForm from "./RegistoForm";
+import DespachoForm from "./DespachoForm";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import useTable from "../../../components/useTable";
-import * as RequerimentosService from "../RequerimentosService";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Controls from "../../../components/controls/Controls";
@@ -21,6 +21,9 @@ import { ConfirmDialog } from "../../../components/ConfirmDialog";
 import Notification from "../../../components/Notification";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import PreviewIcon from "@mui/icons-material/Preview";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { BallTriangle } from "react-loader-spinner";
 const useStyles = makeStyles((theme) => ({
   PageContent: {
     margin: theme.spacing(5),
@@ -41,12 +44,13 @@ const headCells = [
   { id: "tipo", label: "Tipo" },
   { id: "despacho", label: "Despacho" },
   { id: "destino_id", label: "Destino" },
-  { id: "reque", label: "Requerete_id" },
+  { id: "reque", label: "Requerente" },
   { id: "actions", label: "Acções", disableSorting: true },
 ];
 export default function Tabela_dados() {
   const classes = useStyles();
   const [actualizar, setActualizar] = useState(false);
+  const [despacho, setDespacho] = useState(false);
   const [loading, setLoading] = React.useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [records, setRecords] = useState([]);
@@ -83,24 +87,58 @@ export default function Tabela_dados() {
     subTitle: "",
   });
   const Edit = (registo) => {
-    fetch(
-      "http://localhost:8000/api/updateRequerimento/" +
-        registo.id +
-        "?_method=PUT",
-      {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(registo),
-      }
-    ).then(() => {
-      console.log("updated!");
-      setNotify({
-        isOpen: true,
-        message: "Dado actualizado com sucesso!",
-        type: "success",
+    if (despacho) {
+      fetch(
+        "http://localhost:8000/api/updateRequerimento2/" +
+          registo.id +
+          "?_method=PUT",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(registo),
+        }
+      ).then(() => {
+        console.log("updated!");
+        setNotify({
+          isOpen: true,
+          message: "Despacho Lancado com sucesso!",
+          type: "success",
+        });
+        setOpenPopup2(false);
+        getList();
       });
-      getList();
-    });
+    } else {
+      fetch(
+        "http://localhost:8000/api/updateRequerimento/" +
+          registo.id +
+          "?_method=PUT",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(registo),
+        }
+      ).then(() => {
+        console.log("updated!");
+      });
+      fetch(
+        "http://localhost:8000/api/updateRequerente/" +
+          registo.id +
+          "?_method=PUT",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(registo),
+        }
+      ).then(() => {
+        console.log("updated!");
+        getList();
+        setNotify({
+          isOpen: true,
+          message: "Dado actualizado com sucesso!",
+          type: "success",
+        });
+      });
+    }
     setOpenPopup(false);
   };
   async function onDelete(id) {
@@ -196,8 +234,8 @@ export default function Tabela_dados() {
                         <TableCell>{item.assunto}</TableCell>
                         <TableCell>{item.tipo}</TableCell>
                         <TableCell>{item.despacho}</TableCell>
-                        <TableCell>{item.destino_id}</TableCell>
-                        <TableCell>{item.requerente_id}</TableCell>
+                        <TableCell>{item.designacao}</TableCell>
+                        <TableCell>{item.nome}</TableCell>
                         <TableCell>
                           <Controls.ActionButton
                             color="primary"
@@ -205,6 +243,19 @@ export default function Tabela_dados() {
                               openInPopup(item);
                               setActualizar(true);
                               console.log(item);
+                            }}
+                          >
+                            <PreviewIcon fontSize="small" />
+                          </Controls.ActionButton>
+                          <Controls.ActionButton
+                            color="primary"
+                            onClick={() => {
+                              openInPopup(item);
+                              setDespacho(true);
+                              console.log(item);
+                              setOpenPopup(false);
+
+                              setOpenPopup2(true);
                             }}
                           >
                             <EditOutlinedIcon fontSize="small" />
@@ -231,7 +282,8 @@ export default function Tabela_dados() {
                   </TableBody>
                 ) : (
                   <Box className={classes.progress}>
-                    <CircularProgress />
+                    {/* <CircularProgress /> */}
+                    <BallTriangle color="#00BFFF" height={80} width={80} />
                     Carregando dados...
                   </Box>
                 )}
@@ -247,6 +299,17 @@ export default function Tabela_dados() {
                 recordForEdit={recordForEdit}
                 Edit={Edit}
                 actualizar={actualizar}
+              />
+            </Popup>
+            <Popup
+              title="Despachos do Requerimento"
+              openPopup={openPopup2}
+              setOpenPopup={setOpenPopup2}
+            >
+              <DespachoForm
+                recordForEdit={recordForEdit}
+                Edit={Edit}
+                despacho={despacho}
               />
             </Popup>
 

@@ -21,7 +21,8 @@ import { ConfirmDialog } from "../../../components/ConfirmDialog";
 import Notification from "../../../components/Notification";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { BallTriangle } from "react-loader-spinner";
 const useStyles = makeStyles((theme) => ({
   PageContent: {
     margin: theme.spacing(5),
@@ -41,7 +42,6 @@ const headCells = [
   { id: "assunto", label: "Assunto" },
   { id: "tipo", label: "Tipo" },
   { id: "proveniencia_id", label: " Proveniência" },
-  { id: "destino_id", label: "Destino" },
   { id: "actions", label: "Acções", disableSorting: true },
 ];
 export default function Tabela_dados() {
@@ -189,8 +189,7 @@ export default function Tabela_dados() {
                         <TableCell>{item.data_entrada}</TableCell>
                         <TableCell>{item.assunto}</TableCell>
                         <TableCell>{item.tipo}</TableCell>
-                        <TableCell>{item.proveniencia_id}</TableCell>
-                        <TableCell>{item.destino_id}</TableCell>
+                        <TableCell>{item.designacao}</TableCell>
                         <TableCell>
                           <Controls.ActionButton
                             color="primary"
@@ -224,8 +223,9 @@ export default function Tabela_dados() {
                   </TableBody>
                 ) : (
                   <Box className={classes.progress}>
-                    <CircularProgress />
-                    Carregando  dados...
+                    {/* <CircularProgress /> */}
+                    <BallTriangle color="#00BFFF" height={80} width={80} />
+                    Carregando dados...
                   </Box>
                 )}
               </TblContainer>

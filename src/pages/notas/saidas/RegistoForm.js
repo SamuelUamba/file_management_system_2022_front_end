@@ -3,7 +3,8 @@ import { Grid, TextField, FormLabel, makeStyles } from "@material-ui/core";
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from "../../../components/useForm";
 import Notification from "../../../components/Notification";
-import * as NotaService from "../NotaService";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const initialFValues = {
   id: 0,
@@ -36,8 +37,6 @@ export default function RegistoForm(props) {
         : "Campo obrigatório.";
     if ("assunto" in fieldFValues)
       temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
-    if ("observacao" in fieldFValues)
-      temp.observacao = fieldFValues.observacao ? "" : "Campo obrigatório.";
 
     if ("destino_id" in fieldFValues)
       temp.destino_id =
@@ -169,8 +168,14 @@ export default function RegistoForm(props) {
             />{" "}
           </Grid>
           <div>
-            <Controls.Button type="submit" variant="outlined" text="Submeter" />
             <Controls.Button
+              type="submit"
+              variant="outlined"
+              text="Submeter"
+              startIcon={<SaveIcon />}
+            />
+            <Controls.Button
+              startIcon={<CancelIcon />}
               text="Cancelar"
               variant="outlined"
               color="secondary"

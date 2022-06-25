@@ -21,7 +21,8 @@ import Notification from "../../components/Notification";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { BallTriangle } from "react-loader-spinner";
 const useStyles = makeStyles((theme) => ({
   PageContent: {
     margin: theme.spacing(5),
@@ -37,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 const headCells = [
   { id: "Ordem", label: "Ordem" },
-  { id: "data_entrada", label: "Data da Marcacao" },
+  { id: "data_marcacao", label: "Data da Marcação" },
   { id: "assunto", label: "Assunto" },
-  { id: "estado", label: "Estado" },
+  { id: "estado", label: "Estado do pedido" },
   { id: "actions", label: "Acções", disableSorting: true },
 ];
 export default function Tabela_dados() {
@@ -129,7 +130,7 @@ export default function Tabela_dados() {
               <div className="col-sm-8">
                 <h1 className="m-0">
                   <CalendarMonthIcon fontSize="large" color="warning" />
-                  Pedidos Pendentes
+                  Pedidos sem data Marcada
                 </h1>
               </div>
               {/* /.col */}
@@ -138,9 +139,7 @@ export default function Tabela_dados() {
                   <li className="breadcrumb-item">
                     <a href="/#/">Home</a>
                   </li>
-                  <li className="breadcrumb-item active">
-                    Entrada / Requerimentos
-                  </li>
+                  <li className="breadcrumb-item active">Audiências</li>
                 </ol>
               </div>
             </div>
@@ -195,7 +194,8 @@ export default function Tabela_dados() {
                   </TableBody>
                 ) : (
                   <Box className={classes.progress}>
-                    <CircularProgress />
+                    {/* <CircularProgress /> */}
+                    <BallTriangle color="#00BFFF" height={80} width={80} />
                     Carregando dados...
                   </Box>
                 )}

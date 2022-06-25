@@ -3,7 +3,8 @@ import { Grid, makeStyles } from "@material-ui/core";
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from "../../components/useForm";
 import Notification from "../../components/Notification";
-
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 const initialFValues = {
   id: 0,
   designacao: "",
@@ -75,8 +76,14 @@ export default function AddLocalidades(props) {
         </Grid>
 
         <div>
-          <Controls.Button type="submit" variant="outlined" text="Submeter" />
           <Controls.Button
+            type="submit"
+            variant="outlined"
+            text="Submeter"
+            startIcon={<SaveIcon />}
+          />
+          <Controls.Button
+            startIcon={<CancelIcon />}
             text="Cancelar"
             variant="outlined"
             color="secondary"

@@ -3,8 +3,8 @@ import { Grid, TextField, FormLabel, makeStyles } from "@material-ui/core";
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from "../../../components/useForm";
 import Notification from "../../../components/Notification";
-import * as NotaService from "../NotaService";
-
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 const initialFValues = {
   id: 0,
   data_entrada: new Date(),
@@ -26,6 +26,7 @@ export default function RegistoForm(props) {
   const [proveniencias, setProveniencias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
   const [destinos, setDestinos] = useState([]);
+  const [loadingStatus, setLoadingStatus] = useState(true);
 
   useEffect(() => {
     getProveniencias();
@@ -34,13 +35,12 @@ export default function RegistoForm(props) {
   }, []);
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
+    setLoadingStatus(false);
     let temp = { ...errors };
     if ("codigo_nota" in fieldFValues)
       temp.codigo_nota = fieldFValues.codigo_nota ? "" : "Campo obrigatório.";
     if ("assunto" in fieldFValues)
       temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
-    if ("observacao" in fieldFValues)
-      temp.observacao = fieldFValues.observacao ? "" : "Campo obrigatório.";
     if ("proveniencia_id" in fieldFValues)
       temp.proveniencia_id =
         fieldFValues.proveniencia_id.length != 0 ? "" : "Campo obrigatório.";
@@ -79,6 +79,7 @@ export default function RegistoForm(props) {
             message: "Dado Submetido com sucesso!",
             type: "success",
           });
+          setLoadingStatus(true);
         });
       }
       resetForm();
@@ -199,8 +200,14 @@ export default function RegistoForm(props) {
             /> */}
           </Grid>
           <div>
-            <Controls.Button type="submit" variant="outlined" text="Submeter" />
             <Controls.Button
+              type="submit"
+              variant="outlined"
+              text="Submeter"
+              startIcon={<SaveIcon />}
+            />
+            <Controls.Button
+              startIcon={<CancelIcon />}
               text="Cancelar"
               variant="outlined"
               color="secondary"

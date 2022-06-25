@@ -26,7 +26,6 @@ export default function Configuracoes() {
   const [openPopup, setOpenPopup] = useState(false);
   const [openPopup2, setOpenPopup2] = useState(false);
   const [openPopup3, setOpenPopup3] = useState(false);
-  const [openPopup4, setOpenPopup4] = useState(false);
   return (
     <>
       <div className="content-wrapper">
@@ -41,10 +40,12 @@ export default function Configuracoes() {
               <Box>
                 <CardContent>
                   <Typography variant="h6" component="div">
-                    Deistinos
+                    Destinos
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Adicionar Destinos mais frequentes
+                    Adicionar Destinos mais frequentes em relação as notas,
+                    pedidos de audiências,e requerimentos. Exemplo: Gabinete do
+                    director dos curso de Informática.
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -64,10 +65,11 @@ export default function Configuracoes() {
               <Box>
                 <CardContent>
                   <Typography variant="h6" component="div">
-                    Localidades
+                    Localização/Províncias/Distritos
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Adicionar Localidades
+                    Adicionar locais mais frequentes em termos da proveniencia
+                    dos documentos. Exemplo: Matola.
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -90,10 +92,11 @@ export default function Configuracoes() {
               <Box>
                 <CardContent>
                   <Typography variant="h6" component="div">
-                    Adicionar Proveniencias
+                    Adicionar Proveniencias dos Documentos
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Adicionar Proveniencias mais frequentes
+                    Adicionar Proveniencias mais frequentes dos documentos.
+                    Exemplo: Reitoria.
                   </Typography>
                 </CardContent>
                 <CardActions>
