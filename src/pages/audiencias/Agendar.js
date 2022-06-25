@@ -8,7 +8,8 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import RegistoForm from "./RegistoForm";
+import AgendarForm from "./AgendarForm";
+import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import useTable from "../../components/useTable";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
@@ -18,9 +19,9 @@ import Popup from "../../components/Popup";
 import { ConfirmDialog } from "../../components/ConfirmDialog";
 import Notification from "../../components/Notification";
 import CircularProgress from "@mui/material/CircularProgress";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import PreviewIcon from "@mui/icons-material/Preview";
 import Box from "@mui/material/Box";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+
 const useStyles = makeStyles((theme) => ({
   PageContent: {
     margin: theme.spacing(5),
@@ -38,6 +39,7 @@ const headCells = [
   { id: "Ordem", label: "Ordem" },
   { id: "data_entrada", label: "Data da Marcacao" },
   { id: "assunto", label: "Assunto" },
+  { id: "estado", label: "Estado" },
   { id: "actions", label: "Acções", disableSorting: true },
 ];
 export default function Tabela_dados() {
@@ -67,7 +69,6 @@ export default function Tabela_dados() {
   };
 
   const [openPopup, setOpenPopup] = useState(false);
-  const [openPopup2, setOpenPopup2] = useState(false);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -80,19 +81,7 @@ export default function Tabela_dados() {
   });
   const Edit = (registo) => {
     fetch(
-      "http://localhost:8000/api/updateAudiencia/" +
-        registo.id +
-        "?_method=PUT",
-      {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(registo),
-      }
-    ).then(() => {
-      console.log("updated!");
-    });
-    fetch(
-      "http://localhost:8000/api/updateSolicitante/" +
+      "http://localhost:8000/api/updateAudiencia2/" +
         registo.id +
         "?_method=PUT",
       {
@@ -104,34 +93,14 @@ export default function Tabela_dados() {
       console.log("updated!");
       setNotify({
         isOpen: true,
-        message: "Dado actualizado com sucesso!",
+        message: "Audiencia Marcada com sucesso!",
         type: "success",
       });
       getList();
     });
     setOpenPopup(false);
   };
-  async function onDelete(id) {
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-    let result = await fetch(
-      "http://localhost:8000/api/deleteAudiencia/" + id,
-      {
-        method: "DELETE",
-      }
-    );
-    result = await result.json();
-    console.warn(result);
-    setNotify({
-      isOpen: true,
-      message: "Eliminado com sucesso!",
-      type: "error",
-    });
-    setLoading(true);
-    getList();
-  }
+
   useEffect(() => {
     getList();
   }, []);
@@ -144,7 +113,7 @@ export default function Tabela_dados() {
   }, []);
 
   async function getList() {
-    let result = await fetch("http://localhost:8000/api/getAudiencia");
+    let result = await fetch("http://localhost:8000/api/getAudienciaPendente");
     result = await result.json();
     setRecords(result);
     setLoading(true);
@@ -160,7 +129,7 @@ export default function Tabela_dados() {
               <div className="col-sm-8">
                 <h1 className="m-0">
                   <CalendarMonthIcon fontSize="large" color="warning" />
-                  Tabela de Dados: Audiencias
+                  Pedidos Pendentes
                 </h1>
               </div>
               {/* /.col */}
@@ -170,7 +139,7 @@ export default function Tabela_dados() {
                     <a href="/#/">Home</a>
                   </li>
                   <li className="breadcrumb-item active">
-                    Entrada/Requerimentos
+                    Entrada / Requerimentos
                   </li>
                 </ol>
               </div>
@@ -203,6 +172,7 @@ export default function Tabela_dados() {
                         <TableCell>{item.id}</TableCell>
                         <TableCell>{item.data_marcacao}</TableCell>
                         <TableCell>{item.assunto}</TableCell>
+                        <TableCell>{item.estado}</TableCell>
                         <TableCell>
                           <Controls.ActionButton
                             color="primary"
@@ -212,23 +182,12 @@ export default function Tabela_dados() {
                               console.log(item);
                             }}
                           >
-                            <PreviewIcon fontSize="small" />
-                          </Controls.ActionButton>
-                          <Controls.ActionButton
-                            color="secondary"
-                            onClick={() => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title: "Tens Certeza da Operação?",
-                                subTitle: "Esta acção não é reversível",
-                                onConfirm: () => {
-                                  onDelete(item.id);
-                                  setOpenPopup(false);
-                                },
-                              });
-                            }}
-                          >
-                            <CloseIcon fontSize="small" />
+                            <CalendarMonthIcon
+                              fontSize="small"
+                              color="warning"
+                            />
+
+                            {/* <EditOutlinedIcon fontSize="small" /> */}
                           </Controls.ActionButton>
                         </TableCell>
                       </TableRow>
@@ -244,11 +203,11 @@ export default function Tabela_dados() {
               <TblPagination />
             </Paper>
             <Popup
-              title="Atualização de Dados"
+              title="Marcação da Data da Audiencia"
               openPopup={openPopup}
               setOpenPopup={setOpenPopup}
             >
-              <RegistoForm
+              <AgendarForm
                 recordForEdit={recordForEdit}
                 Edit={Edit}
                 actualizar={actualizar}

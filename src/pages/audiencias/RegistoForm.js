@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, FormLabel, makeStyles } from "@material-ui/core";
+import { Grid, FormLabel } from "@material-ui/core";
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from "../../components/useForm";
 import Notification from "../../components/Notification";
-import * as AudienciasService from "./AudienciasService";
-
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 const initialFValues = {
   id: 0,
-  data_marcacao: new Date(),
-  data_audiencia: new Date(),
   assunto: "",
+  tipo: "normal",
+  data_marcacao: new Date(),
 
+  data_audiencia: "",
+  observacao: "",
+  hora_audiencia: "",
+
+  destino_id: "",
   solicitante_id: "",
+
   nome: "",
   email: "",
   contacto: "",
-  observacao: "",
-  estado_id: "0",
-
-  //   isSubmited: true
 };
-const estadoItens = [
-  { id: "0", title: "Pendente" },
-  { id: "1", title: "Marcado" },
+const prioridadeItens = [
+  { id: "normal", title: "Normal" },
+  { id: "urgente", title: "Urgente" },
 ];
+
 export default function RegistoForm(props) {
   const { Edit, recordForEdit, actualizar } = props;
-
+  const [destinos, setDestinos] = useState([]);
+  useEffect(() => {
+    getDestinos();
+  }, []);
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
@@ -34,19 +40,22 @@ export default function RegistoForm(props) {
       temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
     if ("nome" in fieldFValues)
       temp.nome = fieldFValues.nome ? "" : "Campo obrigatório.";
+    if ("requerente_id" in fieldFValues)
+      temp.requerente_id = fieldFValues.requerente_id
+        ? ""
+        : "Campo obrigatório.";
 
-    if ("observacao" in fieldFValues)
-      temp.observacao = fieldFValues.observacao ? "" : "Campo obrigatório.";
     if ("destino_id" in fieldFValues)
       temp.destino_id =
         fieldFValues.destino_id.length != 0 ? "" : "Campo obrigatório.";
-
-    if ("solicitante_id" in fieldFValues)
-      temp.solicitante_id =
-        fieldFValues.solicitante_id.length != 0 ? "" : "Campo obrigatório.";
     if ("data_marcacao" in fieldFValues)
       temp.data_marcacao =
         fieldFValues.data_marcacao.length != 0 ? "" : "Campo obrigatório.";
+    if ("email" in fieldFValues)
+      temp.email = /$^|.+@.+..+/.test(values.email) ? "" : "Email invalido.";
+    if ("contacto" in fieldFValues)
+      temp.contacto =
+        fieldFValues.contacto.length == 9 ? "" : "Minino 9 Digitos.";
 
     setErrors({
       ...temp,
@@ -62,11 +71,24 @@ export default function RegistoForm(props) {
       if (actualizar) {
         Edit(values);
       } else {
-        AudienciasService.create(values);
-        setNotify({
-          isOpen: true,
-          message: "Dado Submetido com sucesso!",
-          type: "success",
+        fetch("http://localhost:8000/api/saveSolicitante", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+        });
+        fetch("http://localhost:8000/api/saveAudiencia", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(values),
+        }).then(() => {
+          console.log("entrada adicionada!");
+          setNotify({
+            isOpen: true,
+            message: "Dado Submetido com sucesso!",
+            type: "success",
+          });
         });
       }
       resetForm();
@@ -87,11 +109,18 @@ export default function RegistoForm(props) {
         ...recordForEdit,
       });
   }, [recordForEdit]);
+  async function getDestinos() {
+    let result = await fetch("http://localhost:8000/api/getDestino");
+    result = await result.json();
+    setDestinos(result);
+  }
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
         <Grid container>
           <Grid xs={6}>
+            <h5>Dados sobre a solicitação</h5>
             <Controls.Input
               variant="outlined"
               label="Assunto"
@@ -102,51 +131,34 @@ export default function RegistoForm(props) {
               rows={2}
               error={errors.assunto}
             />{" "}
-            <Controls.RadioGroup
-              name="estado_id"
-              value={values.estado_id}
+            <Controls.Select
+              name="destino_id"
+              label="Entidade com a qual deseja ter Audiência"
+              value={values.destino_id}
               onChange={handleInputChange}
-              items={estadoItens}
+              options={destinos}
+              error={errors.destino_id}
+            />
+            <Controls.RadioGroup
+              // label="Prioridade"
+              name="tipo"
+              value={values.tipo}
+              onChange={handleInputChange}
+              items={prioridadeItens}
               checked
             />
             <Controls.Input
               variant="outlined"
-              label="Observação"
-              name="observacao"
-              value={values.observacao}
-              onChange={handleInputChange}
-              multiline
-              rows={2}
-              error={errors.observacao}
-            />
-            <FormLabel>Data da Marcação</FormLabel>
-            <Controls.Input
-              variant="outlined"
               type="date"
+              //   label="Data de Entrada"
               name="data_marcacao"
               value={values.data_marcacao}
               onChange={handleInputChange}
               error={errors.data_marcacao}
             />{" "}
-            <FormLabel>Data da Audiência</FormLabel>
-            <Controls.Input
-              variant="outlined"
-              type="date"
-              name="data_audiencia"
-              value={values.data_audiencia}
-              onChange={handleInputChange}
-              error={errors.data_audiencia}
-            />{" "}
           </Grid>
           <Grid xs={6}>
-            <Controls.Select
-              name="solicitante_id"
-              label="Solicitante"
-              value={values.solicitante_id}
-              onChange={handleInputChange}
-              options={AudienciasService.getLocalidade()}
-              error={errors.solicitante_id}
-            />
+            <h5>Dados do Solicitante</h5>
             <Controls.Input
               variant="outlined"
               name="nome"
@@ -171,10 +183,26 @@ export default function RegistoForm(props) {
               onChange={handleInputChange}
               error={errors.contacto}
             />{" "}
+            <Controls.Input
+              variant="outlined"
+              label="Observação"
+              name="observacao"
+              value={values.observacao}
+              onChange={handleInputChange}
+              multiline
+              rows={2}
+              error={errors.observacao}
+            />
           </Grid>
           <div>
-            <Controls.Button type="submit" variant="outlined" text="Submeter" />
             <Controls.Button
+              type="submit"
+              variant="outlined"
+              text="Submeter"
+              startIcon={<SaveIcon />}
+            />
+            <Controls.Button
+              startIcon={<CancelIcon />}
               text="Cancelar"
               variant="outlined"
               color="secondary"

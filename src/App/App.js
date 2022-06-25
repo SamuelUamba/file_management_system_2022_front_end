@@ -24,6 +24,7 @@ import RegistoRequerimento from "../pages/requerimentos/entradas/Registo";
 import Tabela_Dados_Entrada_Requerimentos from "../pages/requerimentos/entradas/Tabela_Dados_Entrada_Requerimentos";
 
 import RegistoAudiencia from "../pages/audiencias/Registo";
+import Agendar from "../pages/audiencias/Agendar";
 import Tabela_Dados_audiencias from "../pages/audiencias/Tabela_Dados_audiencias";
 
 import Configuracoes from "../pages/config/Configuracoes";
@@ -68,14 +69,14 @@ function App() {
 
               {/* Audiencias */}
               <Route exact path="/Audiencias" element={<RegistoAudiencia />} />
+              <Route exact path="/Audiencias/agendar" element={<Agendar />} />
               <Route
                 exact
-                path="/Audiencias/agendar"
+                path="/Audiencias/dados"
                 element={<Tabela_Dados_audiencias />}
               />
-{/* Configuracoes */}
+              {/* Configuracoes */}
               <Route exact path="/configuracoes" element={<Configuracoes />} />
-
             </Routes>
           </HashRouter>
         </>

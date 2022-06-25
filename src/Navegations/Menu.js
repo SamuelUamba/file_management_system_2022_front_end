@@ -128,14 +128,6 @@ export default class Menu extends Component {
                         <p>Entradas</p>
                       </a>
                     </li>
-                    {/* <li className="nav-item">
-                      <a href="/#/Requerimentos/saida" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <span className="badge badge-danger right">-</span>
-
-                        <p>Saidas</p>
-                      </a>
-                    </li> */}
                     <li className="nav-item">
                       <a
                         href="/#/Requerimentos/dados/entradas"
@@ -148,14 +140,46 @@ export default class Menu extends Component {
                     </li>
                   </ul>
                 </li>
+                <li className="nav-item">
+                  <a href="#" className="nav-link">
+                    <CalendarMonthIcon fontSize="large" color="warning" />
 
-                <li className="nav-header">Audiencias</li>
+                    <p>
+                      Audiencias
+                      <i className="fas fa-angle-left right" />
+                    </p>
+                  </a>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                      <a href="/#/Audiencias" className="nav-link">
+                        <i className="far fa-circle nav-icon" />
+                        <span className="badge badge-info right">+</span>
+                        <p>Pedidos</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/#/Audiencias/agendar" className="nav-link">
+                        <BackupTableIcon />
+                        <span className="badge badge-success right">.</span>
+                        <p>Agendar</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/#/Audiencias/dados" className="nav-link">
+                        <BackupTableIcon />
+                        <span className="badge badge-success right">.</span>
+                        <p>Tabela de Dados</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                {/* <li className="nav-header">Audiencias</li>
                 <li className="nav-item">
                   <a href="/#/Audiencias" className="nav-link">
                     <CalendarMonthIcon fontSize="large" color="warning" />
                     <p>
                       Pedidos
-                      <span className="badge badge-info right">2</span>
+                      <span className="badge badge-warning right">+</span>
                     </p>
                   </a>
                 </li>
@@ -164,10 +188,10 @@ export default class Menu extends Component {
                     <CalendarMonthIcon fontSize="large" color="success" />
                     <p>
                       Agendar
-                      <span className="badge badge-info right">2</span>
+                      <span className="badge badge-info right">+</span>
                     </p>
                   </a>
-                </li>
+                </li> */}
 
                 <li className="nav-item">
                   <a href="/#/configuracoes" className="nav-link">
