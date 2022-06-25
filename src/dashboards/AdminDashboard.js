@@ -3,12 +3,17 @@ import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import ArticleIcon from "@mui/icons-material/Article";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GraficoCircular from "./PieChart";
+import GraficoBarras from "./BarChart";
 
 export default function AdminDashboard() {
   const [totalRequerimento, setTotalRequerimento] = useState(0);
   const [totalNotasEntrada, setTotalNotasEntrada] = useState(0);
   const [totalNotasSaidas, setTotalNotasSaidas] = useState(0);
   const [totalAudiencias, setTotalAudiencias] = useState(0);
+  const [requerimentos, setRequerimentos] = useState(0);
+  const [notasEntradas, setNotasEntradas] = useState(0);
+  const [notasSaidas, setNotasSaidas] = useState(0);
+  const [audiencias, setAudiencias] = useState(0);
 
   useEffect(() => {
     TotalAudiencias();
@@ -43,6 +48,33 @@ export default function AdminDashboard() {
     );
     result = await result.json();
     setTotalAudiencias(result);
+  }
+
+  useEffect(() => {
+    Audiencias();
+    Requerimentos();
+    NotasEntradas();
+    NotasSaidas();
+  }, []);
+  async function Requerimentos() {
+    let result = await fetch("http://localhost:8000/api/getRequerimento");
+    result = await result.json();
+    setRequerimentos(result);
+  }
+  async function NotasEntradas() {
+    let result = await fetch("http://localhost:8000/api/getNotaEntrada");
+    result = await result.json();
+    setNotasEntradas(result);
+  }
+  async function NotasSaidas() {
+    let result = await fetch("http://localhost:8000/api/getNotaSaida");
+    result = await result.json();
+    setNotasSaidas(result);
+  }
+  async function Audiencias() {
+    let result = await fetch("http://localhost:8000/api/getDados/getAudiencia");
+    result = await result.json();
+    setAudiencias(result);
   }
 
   return (
@@ -143,7 +175,9 @@ export default function AdminDashboard() {
               <div className="col-md-8">
                 <div className="card">
                   <div className="card-header">
-                    <h5 className="card-title">Monthly Recap Report</h5>
+                    <h5 className="card-title">
+                      Dados Mensais de entrada de expedientes
+                    </h5>
                     <div className="card-tools">
                       <button
                         type="button"
@@ -191,81 +225,26 @@ export default function AdminDashboard() {
                   {/* /.card-header */}
                   <div className="card-body">
                     <div className="row">
-                      <div className="col-md-8">
+                      <div className="col-md-12">
                         <p className="text-center">
                           <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
                         </p>
                         <div className="chart">
                           {/* Sales Chart Canvas */}
-                          <canvas
+                          {/* <canvas
                             id="salesChart"
                             height={180}
                             style={{ height: 180 }}
+                          /> */}
+                          <GraficoBarras
+                            requerimentos={requerimentos}
+                            notasEntradas={notasEntradas}
+                            notasSaidas={notasSaidas}
+                            audiencias={audiencias}
                           />
                         </div>
                         {/* /.chart-responsive */}
                       </div>
-                      {/* /.col */}
-                      <div className="col-md-4">
-                        <p className="text-center">
-                          <strong>Goal Completion</strong>
-                        </p>
-                        <div className="progress-group">
-                          Add Products to Cart
-                          <span className="float-right">
-                            <b>160</b>/200
-                          </span>
-                          <div className="progress progress-sm">
-                            <div
-                              className="progress-bar bg-primary"
-                              style={{ width: "80%" }}
-                            />
-                          </div>
-                        </div>
-                        {/* /.progress-group */}
-                        <div className="progress-group">
-                          Complete Purchase
-                          <span className="float-right">
-                            <b>310</b>/400
-                          </span>
-                          <div className="progress progress-sm">
-                            <div
-                              className="progress-bar bg-danger"
-                              style={{ width: "75%" }}
-                            />
-                          </div>
-                        </div>
-                        {/* /.progress-group */}
-                        <div className="progress-group">
-                          <span className="progress-text">
-                            Visit Premium Page
-                          </span>
-                          <span className="float-right">
-                            <b>480</b>/800
-                          </span>
-                          <div className="progress progress-sm">
-                            <div
-                              className="progress-bar bg-success"
-                              style={{ width: "60%" }}
-                            />
-                          </div>
-                        </div>
-                        {/* /.progress-group */}
-                        <div className="progress-group">
-                          Send Inquiries
-                          <span className="float-right">
-                            <b>250</b>/500
-                          </span>
-                          <div className="progress progress-sm">
-                            <div
-                              className="progress-bar bg-warning"
-                              style={{ width: "50%" }}
-                            />
-                          </div>
-                        </div>
-                        {/* /.progress-group */}
-                      </div>
-                      {/* /.col */}
                     </div>
                     {/* /.row */}
                   </div>
@@ -443,6 +422,129 @@ export default function AdminDashboard() {
                   </div>
                   {/* /.footer */}
                 </div>
+              </div>
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="card-header">
+                    <h5 className="card-title">
+                      Dados Mensais de entrada de expedientes
+                    </h5>
+                    <div className="card-tools">
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="collapse"
+                      >
+                        <i className="fas fa-minus" />
+                      </button>
+                      <div className="btn-group">
+                        <button
+                          type="button"
+                          className="btn btn-tool dropdown-toggle"
+                          data-toggle="dropdown"
+                        >
+                          <i className="fas fa-wrench" />
+                        </button>
+                        <div
+                          className="dropdown-menu dropdown-menu-right"
+                          role="menu"
+                        >
+                          <a href="#" className="dropdown-item">
+                            Action
+                          </a>
+                          <a href="#" className="dropdown-item">
+                            Another action
+                          </a>
+                          <a href="#" className="dropdown-item">
+                            Something else here
+                          </a>
+                          <a className="dropdown-divider" />
+                          <a href="#" className="dropdown-item">
+                            Separated link
+                          </a>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-tool"
+                        data-card-widget="remove"
+                      >
+                        <i className="fas fa-times" />
+                      </button>
+                    </div>
+                  </div>
+                  {/* /.card-header */}
+                  <div className="card-body">
+                    <div className="row">
+                      {/* /.col */}
+                      <div className="col-md-12">
+                        <p className="text-center">
+                          <strong>Goal Completion</strong>
+                        </p>
+                        <div className="progress-group">
+                          Add Products to Cart
+                          <span className="float-right">
+                            <b>160</b>/200
+                          </span>
+                          <div className="progress progress-sm">
+                            <div
+                              className="progress-bar bg-primary"
+                              style={{ width: "80%" }}
+                            />
+                          </div>
+                        </div>
+                        {/* /.progress-group */}
+                        <div className="progress-group">
+                          Complete Purchase
+                          <span className="float-right">
+                            <b>310</b>/400
+                          </span>
+                          <div className="progress progress-sm">
+                            <div
+                              className="progress-bar bg-danger"
+                              style={{ width: "75%" }}
+                            />
+                          </div>
+                        </div>
+                        {/* /.progress-group */}
+                        <div className="progress-group">
+                          <span className="progress-text">
+                            Visit Premium Page
+                          </span>
+                          <span className="float-right">
+                            <b>480</b>/800
+                          </span>
+                          <div className="progress progress-sm">
+                            <div
+                              className="progress-bar bg-success"
+                              style={{ width: "60%" }}
+                            />
+                          </div>
+                        </div>
+                        {/* /.progress-group */}
+                        <div className="progress-group">
+                          Send Inquiries
+                          <span className="float-right">
+                            <b>250</b>/500
+                          </span>
+                          <div className="progress progress-sm">
+                            <div
+                              className="progress-bar bg-warning"
+                              style={{ width: "50%" }}
+                            />
+                          </div>
+                        </div>
+                        {/* /.progress-group */}
+                      </div>
+                      {/* /.col */}
+                    </div>
+                    {/* /.row */}
+                  </div>
+                  {/* ./card-body */}
+
+                  {/* /.card-footer */}
+                </div>
+                {/* /.card */}
               </div>
 
               {/* /.col */}
