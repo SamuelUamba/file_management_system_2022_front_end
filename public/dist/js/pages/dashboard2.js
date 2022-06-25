@@ -85,6 +85,18 @@ $(function () {
   // Get context with jQuery - using jQuery's .get() method.
   var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
   var pieData = {
+<<<<<<< HEAD
+    labels: [
+      "Requerimentos",
+      "Notas de entrada",
+      "Notas de saída",
+      "Audiências",
+    ],
+    datasets: [
+      {
+        data: [400, 200, 100, 300],
+        backgroundColor: ["#00c0ef", "#f39c12", "#f56954", "#00a65a"],
+=======
     labels: ["Chrome", "IE", "FireFox", "Safari", "Opera", "Navigator"],
     datasets: [
       {
@@ -97,6 +109,7 @@ $(function () {
           "#3c8dbc",
           "#d2d6de",
         ],
+>>>>>>> a6bba7654a5e4c180f8cb2afa25eb44f74839004
       },
     ],
   };
