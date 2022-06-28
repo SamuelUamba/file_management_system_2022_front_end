@@ -13,7 +13,7 @@ import Header from "../Navegations/Header";
 import Menu from "../Navegations/Menu";
 import Footer from "../Navegations/Footer";
 
-import AdminDashboard from "../dashboards/AdminDashboard";
+// import AdminDashboard from "../dashboards/AdminDashboard";
 
 import RegistoNota from "../pages/notas/entradas/Registo";
 import RegistoSaida from "../pages/notas/saidas/Registo";
@@ -39,7 +39,7 @@ function App() {
             <Menu />
             <Footer />
             <Routes>
-              <Route exact path="/" element={<AdminDashboard />} />
+              {/* <Route exact path="/" element={<AdminDashboard />} /> */}
               {/* Notas de Envio */}
               <Route exact path="/Notas/entrada" element={<RegistoNota />} />
               <Route
