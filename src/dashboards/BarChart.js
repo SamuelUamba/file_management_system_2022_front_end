@@ -226,12 +226,12 @@ export default class GraficoBarras extends PureComponent {
     return (
       <BarChart
         width={700}
-        height={200}
+        height={300}
         data={data}
         margin={{
           top: 5,
-          right: 30,
-          left: 20,
+          right: 5,
+          left: 5,
           bottom: 5,
         }}
       >
@@ -241,8 +241,8 @@ export default class GraficoBarras extends PureComponent {
         <Tooltip />
         <Legend />
         <Bar dataKey="Requerimentos" fill="#00c0ef" />
-        <Bar dataKey="Nota_entrada" fill="#f39c12" />
-        <Bar dataKey="Nota_saida" fill="#f56954" />
+        <Bar dataKey="Nota_entrada" fill="#f56954" />
+        <Bar dataKey="Nota_saida" fill="#f39c12" />
         <Bar dataKey="Audiencia" fill="#00a65a" />
       </BarChart>
     );

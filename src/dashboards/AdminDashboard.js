@@ -227,7 +227,9 @@ export default function AdminDashboard() {
                     <div className="row">
                       <div className="col-md-12">
                         <p className="text-center">
-                          <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                          <strong>
+                            Expedientes: Janeiro - Dezembro de 2022
+                          </strong>
                         </p>
                         <div className="chart">
                           {/* Sales Chart Canvas */}
@@ -249,7 +251,7 @@ export default function AdminDashboard() {
                     {/* /.row */}
                   </div>
                   {/* ./card-body */}
-                  <div className="card-footer">
+                  {/* <div className="card-footer">
                     <div className="row">
                       <div className="col-sm-3 col-6">
                         <div className="description-block border-right">
@@ -261,9 +263,9 @@ export default function AdminDashboard() {
                             TOTAL REVENUE
                           </span>
                         </div>
-                        {/* /.description-block */}
+                        
                       </div>
-                      {/* /.col */}
+                     
                       <div className="col-sm-3 col-6">
                         <div className="description-block border-right">
                           <span className="description-percentage text-warning">
@@ -272,9 +274,9 @@ export default function AdminDashboard() {
                           <h5 className="description-header">$10,390.90</h5>
                           <span className="description-text">TOTAL COST</span>
                         </div>
-                        {/* /.description-block */}
+                        
                       </div>
-                      {/* /.col */}
+                      
                       <div className="col-sm-3 col-6">
                         <div className="description-block border-right">
                           <span className="description-percentage text-success">
@@ -283,9 +285,9 @@ export default function AdminDashboard() {
                           <h5 className="description-header">$24,813.53</h5>
                           <span className="description-text">TOTAL PROFIT</span>
                         </div>
-                        {/* /.description-block */}
+                       
                       </div>
-                      {/* /.col */}
+                     
                       <div className="col-sm-3 col-6">
                         <div className="description-block">
                           <span className="description-percentage text-danger">
@@ -296,11 +298,11 @@ export default function AdminDashboard() {
                             GOAL COMPLETIONS
                           </span>
                         </div>
-                        {/* /.description-block */}
+                       
                       </div>
                     </div>
-                    {/* /.row */}
-                  </div>
+                 
+                  </div> */}
                   {/* /.card-footer */}
                 </div>
                 {/* /.card */}

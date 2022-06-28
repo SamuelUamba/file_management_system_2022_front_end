@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
-const COLORS = ["#00c0ef", "#f39c12", "#f56954", "#00a65a"];
+const COLORS = ["#00c0ef", "#f56954", "#f39c12", "#00a65a"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
