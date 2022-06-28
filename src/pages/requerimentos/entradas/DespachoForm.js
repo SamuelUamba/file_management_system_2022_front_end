@@ -3,59 +3,24 @@ import { Grid, FormLabel } from "@material-ui/core";
 import Controls from "../../../components/controls/Controls";
 import { useForm, Form } from "../../../components/useForm";
 import Notification from "../../../components/Notification";
-
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 const initialFValues = {
   id: 0,
-  data_entrada: new Date(),
-  assunto: "",
-  tipo: "normal",
   despacho: "diferido",
-  observacao: "",
-  destino_id: "",
-  nome: "",
-  email: "",
-  contacto: "",
 };
-const prioridadeItens = [
-  { id: "normal", title: "Normal" },
-  { id: "urgente", title: "Urgente" },
-];
 const despachoItens = [
-  { id: "diferido", title: "Diferido" },
-  { id: "indiferido", title: "Indiferido" },
+  { id: "diferido", title: "Requerimento Diferido" },
+  { id: "indeferido", title: "Requerimento Indeferido" },
 ];
 export default function DespachoForm(props) {
-  const { Edit, recordForEdit, actualizar } = props;
-  const [destinos, setDestinos] = useState([]);
-  useEffect(() => {
-    getDestinos();
-  }, []);
+  const { Edit, despacho, recordForEdit, actualizar } = props;
+
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
     let temp = { ...errors };
-    if ("assunto" in fieldFValues)
-      temp.assunto = fieldFValues.assunto ? "" : "Campo obrigatório.";
-    if ("nome" in fieldFValues)
-      temp.nome = fieldFValues.nome ? "" : "Campo obrigatório.";
-    if ("requerente_id" in fieldFValues)
-      temp.requerente_id = fieldFValues.requerente_id
-        ? ""
-        : "Campo obrigatório.";
-
-    if ("observacao" in fieldFValues)
-      temp.observacao = fieldFValues.observacao ? "" : "Campo obrigatório.";
-    if ("destino_id" in fieldFValues)
-      temp.destino_id =
-        fieldFValues.destino_id.length != 0 ? "" : "Campo obrigatório.";
-    if ("data_entrada" in fieldFValues)
-      temp.data_entrada =
-        fieldFValues.data_entrada.length != 0 ? "" : "Campo obrigatório.";
-    if ("email" in fieldFValues)
-      temp.email = /$^|.+@.+..+/.test(values.email) ? "" : "Email invalido.";
-    if ("contacto" in fieldFValues)
-      temp.contacto =
-        fieldFValues.contacto.length == 9 ? "" : "Minino 9 Digitos.";
-
+    if ("despacho" in fieldFValues)
+      temp.despacho = fieldFValues.despacho ? "" : "Campo obrigatório.";
     setErrors({
       ...temp,
     });
@@ -67,35 +32,14 @@ export default function DespachoForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (actualizar) {
+      if (despacho) {
         Edit(values);
-      } else {
-        fetch("http://localhost:8000/api/saveRequerente", {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify(values),
-        }).then(() => {
-          console.log("entrada adicionada!");
-        });
-        fetch("http://localhost:8000/api/saveRequerimento", {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify(values),
-        }).then(() => {
-          console.log("entrada adicionada!");
-          setNotify({
-            isOpen: true,
-            message: "Dado Submetido com sucesso!",
-            type: "success",
-          });
-        });
+        resetForm();
       }
-      resetForm();
     }
   };
   const { values, setValues, resetForm, errors, setErrors, handleInputChange } =
     useForm(initialFValues, true, validate);
-  const [openPopup, setOpenPopup] = useState(false);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -108,86 +52,20 @@ export default function DespachoForm(props) {
         ...recordForEdit,
       });
   }, [recordForEdit]);
-  async function getDestinos() {
-    let result = await fetch("http://localhost:8000/api/getDestino");
-    result = await result.json();
-    setDestinos(result);
-  }
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
         <Grid container>
-          <Grid xs={6}>
-            <Controls.Input
-              variant="outlined"
-              label="Assunto"
-              name="assunto"
-              value={values.assunto}
-              onChange={handleInputChange}
-              multiline
-              rows={2}
-              error={errors.assunto}
-            />{" "}
-            <Controls.Select
-              name="destino_id"
-              label="Destino"
-              value={values.destino_id}
-              onChange={handleInputChange}
-              options={destinos}
-              error={errors.destino_id}
-            />
+          <Grid xs={12}>
             <Controls.RadioGroup
               // label="Prioridade"
-              name="tipo"
-              value={values.tipo}
-              onChange={handleInputChange}
-              items={prioridadeItens}
-              checked
-            />
-            <Controls.RadioGroup
-              label="Despacho"
-              name="despcho"
-              value={values.despcho}
+              name="despacho"
+              value={values.despacho}
               onChange={handleInputChange}
               items={despachoItens}
               checked
-            />
-            <FormLabel>Data de Entrada</FormLabel>
-            <Controls.Input
-              variant="outlined"
-              type="date"
-              //   label="Data de Entrada"
-              name="data_entrada"
-              value={values.data_entrada}
-              onChange={handleInputChange}
-              error={errors.data_entrada}
-            />{" "}
-          </Grid>
-          <Grid xs={6}>
-            <Controls.Input
-              variant="outlined"
-              name="nome"
-              label="Nome do Requerente"
-              value={values.nome}
-              onChange={handleInputChange}
-              error={errors.nome}
-            />{" "}
-            <Controls.Input
-              variant="outlined"
-              name="email"
-              label="E-mail"
-              value={values.email}
-              onChange={handleInputChange}
-              error={errors.email}
-            />{" "}
-            <Controls.Input
-              variant="outlined"
-              label="Contacto Telefonico"
-              name="contacto"
-              value={values.contacto}
-              onChange={handleInputChange}
-              error={errors.contacto}
+              row
             />{" "}
             <Controls.Input
               variant="outlined"
@@ -201,8 +79,14 @@ export default function DespachoForm(props) {
             />
           </Grid>
           <div>
-            <Controls.Button type="submit" variant="outlined" text="Submeter" />
             <Controls.Button
+              type="submit"
+              variant="outlined"
+              text="Submeter"
+              startIcon={<SaveIcon />}
+            />
+            <Controls.Button
+              startIcon={<CancelIcon />}
               text="Cancelar"
               variant="outlined"
               color="secondary"
