@@ -13,7 +13,7 @@ import Header from "../Navegations/Header";
 import Menu from "../Navegations/Menu";
 import Footer from "../Navegations/Footer";
 
-// import AdminDashboard from "../dashboards/AdminDashboard";
+import AdminDashboard from "../dashboards/AdminDashboard";
 
 import RegistoNota from "../pages/notas/entradas/Registo";
 import RegistoSaida from "../pages/notas/saidas/Registo";
@@ -28,6 +28,7 @@ import Agendar from "../pages/audiencias/Agendar";
 import Tabela_Dados_audiencias from "../pages/audiencias/Tabela_Dados_audiencias";
 
 import Configuracoes from "../pages/config/Configuracoes";
+import Email from "../dashboards/Email";
 
 function App() {
   return (
@@ -39,7 +40,8 @@ function App() {
             <Menu />
             <Footer />
             <Routes>
-              {/* <Route exact path="/" element={<AdminDashboard />} /> */}
+              <Route exact path="/" element={<AdminDashboard />} />
+              <Route exact path="/ajuda" element={<Email />} />
               {/* Notas de Envio */}
               <Route exact path="/Notas/entrada" element={<RegistoNota />} />
               <Route

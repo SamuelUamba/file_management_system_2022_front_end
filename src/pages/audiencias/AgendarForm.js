@@ -5,6 +5,8 @@ import { useForm, Form } from "../../components/useForm";
 import Notification from "../../components/Notification";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import emailjs from "emailjs-com";
+
 const initialFValues = {
   id: 0,
   hora_audiencia: "",
@@ -38,6 +40,17 @@ export default function AgendarForm(props) {
     if (validate()) {
       if (actualizar) {
         Edit(values);
+        emailjs
+          .sendForm(
+            "service_mz42su7",
+            "template_vaftqiq",
+            e.target,
+            "35eVMx6GQ9Yxpq9lL"
+          )
+          .then((resp) => {
+            console.log(resp);
+          })
+          .cath((err) => console.log(err));
         resetForm();
       }
     }
@@ -63,6 +76,17 @@ export default function AgendarForm(props) {
         <Grid container>
           <Grid xs={12}>
             <h5>Data</h5>
+            <input
+              type="hidden"
+              name="name"
+              value="UEM-Departamento de Matematica e informatica"
+            />
+            <input type="hidden" name="destino" value={recordForEdit.email} />
+            <input
+              type="hidden"
+              name="mensagem"
+              value="Comunicamos que a sua audiencia foi marcada para:"
+            />
             <Controls.Input
               variant="outlined"
               type="date"

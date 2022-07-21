@@ -110,29 +110,29 @@ export default class GraficoBarras extends PureComponent {
     }
     if (this.props.audiencias) {
       for (let audiencia of audiencias) {
-        if (audiencia.data_entrada.substring(5, 7) == "01")
+        if (audiencia.data_marcacao.substring(5, 7) == "01")
           qntAud[0] = 1 + qntAud[0];
-        if (audiencia.data_entrada.substring(5, 7) == "02")
+        if (audiencia.data_marcacao.substring(5, 7) == "02")
           qntAud[1] = 1 + qntAud[1];
-        if (audiencia.data_entrada.substring(5, 7) == "03")
+        if (audiencia.data_marcacao.substring(5, 7) == "03")
           qntAud[2] = 1 + qntAud[2];
-        if (audiencia.data_entrada.substring(5, 7) == "04")
+        if (audiencia.data_marcacao.substring(5, 7) == "04")
           qntAud[3] = 1 + qntAud[3];
-        if (audiencia.data_entrada.substring(5, 7) == "05")
+        if (audiencia.data_marcacao.substring(5, 7) == "05")
           qntAud[4] = 1 + qntAud[4];
-        if (audiencia.data_entrada.substring(5, 7) == "06")
+        if (audiencia.data_marcacao.substring(5, 7) == "06")
           qntAud[5] = 1 + qntAud[5];
-        if (audiencia.data_entrada.substring(5, 7) == "07")
+        if (audiencia.data_marcacao.substring(5, 7) == "07")
           qntAud[6] = 1 + qntAud[6];
-        if (audiencia.data_entrada.substring(5, 7) == "08")
+        if (audiencia.data_marcacao.substring(5, 7) == "08")
           qntAud[7] = 1 + qntAud[7];
-        if (audiencia.data_entrada.substring(5, 7) == "09")
+        if (audiencia.data_marcacao.substring(5, 7) == "09")
           qntAud[8] = 1 + qntAud[8];
-        if (audiencia.data_entrada.substring(5, 7) == "10")
+        if (audiencia.data_marcacao.substring(5, 7) == "10")
           qntAud[9] = 1 + qntAud[9];
-        if (audiencia.data_entrada.substring(5, 7) == "11")
+        if (audiencia.data_marcacao.substring(5, 7) == "11")
           qntAud[10] = 1 + qntAud[10];
-        if (audiencia.data_entrada.substring(5, 7) == "12")
+        if (audiencia.data_marcacao.substring(5, 7) == "12")
           qntAud[11] = 1 + qntAud[11];
       }
     }

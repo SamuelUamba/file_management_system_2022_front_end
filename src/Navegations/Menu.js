@@ -22,7 +22,7 @@ export default class Menu extends Component {
           {/* Sidebar */}
           <div className="sidebar">
             {/* Sidebar user panel (optional) */}
-            <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+            {/* <div className="user-panel mt-3 pb-3 mb-3 d-flex">
               <div className="image">
                 <img
                   src="dist/img/user2-160x160.jpg"
@@ -35,9 +35,9 @@ export default class Menu extends Component {
                   Usuário logado
                 </a>
               </div>
-            </div>
+            </div> */}
             {/* SidebarSearch Form */}
-            <div className="form-inline">
+            {/* <div className="form-inline">
               <div className="input-group" data-widget="sidebar-search">
                 <input
                   className="form-control form-control-sidebar"
@@ -51,7 +51,7 @@ export default class Menu extends Component {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Sidebar Menu */}
             <nav className="mt-2">
               <ul

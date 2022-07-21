@@ -5,6 +5,8 @@ import { useForm, Form } from "../../../components/useForm";
 import Notification from "../../../components/Notification";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import emailjs from "emailjs-com";
+
 const initialFValues = {
   id: 0,
   despacho: "diferido",
@@ -14,7 +16,7 @@ const despachoItens = [
   { id: "indeferido", title: "Requerimento Indeferido" },
 ];
 export default function DespachoForm(props) {
-  const { Edit, despacho, recordForEdit, actualizar } = props;
+  const { Edit, despacho, recordForEdit } = props;
 
   //Validacao de dados  no formulario
   const validate = (fieldFValues = values) => {
@@ -34,6 +36,17 @@ export default function DespachoForm(props) {
     if (validate()) {
       if (despacho) {
         Edit(values);
+        emailjs
+          .sendForm(
+            "service_mz42su7",
+            "template_vaftqiq",
+            e.target,
+            "35eVMx6GQ9Yxpq9lL"
+          )
+          .then((resp) => {
+            console.log(resp);
+          })
+          .cath((err) => console.log(err));
         resetForm();
       }
     }
@@ -58,6 +71,17 @@ export default function DespachoForm(props) {
       <Form onSubmit={handleSubmit}>
         <Grid container>
           <Grid xs={12}>
+            <input
+              type="hidden"
+              name="name"
+              value="UEM-Departamento de Matematica e informatica"
+            />
+            <input type="hidden" name="destino" value={recordForEdit.email} />
+            <input
+              type="hidden"
+              name="mensagem"
+              value="Comunicamos por meio desta que seu requerimento ja possui despacho."
+            />
             <Controls.RadioGroup
               // label="Prioridade"
               name="despacho"
